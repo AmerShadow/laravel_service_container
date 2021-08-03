@@ -8,27 +8,37 @@ namespace App\Billing;
 
 class CreditPaymentGateway implements PaymentContract{
 
-    public $currency,$discount,$fees;
+    public $currency,$discount,$fees,$amount;
 
     public function __construct($currency) {
         $this->currency = $currency;
         $this->discount = 0;
 
     }
-    public function makePayment($amount)
+    public function makePayment()
     {
-        $this->fees=$amount*0.3;
+        $this->fees=$this->amount*0.3;
         return [
+
             "currency" => $this->currency,
-            "amount" => ($amount+$this->fees)- $this->discount,
+            "real_amount" => $this->amount,
+            "payable_amount" => ($this->amount+$this->fees)- $this->discount,
             "invoice number" => random_int(100,999),
             "discount" => $this->discount,
             "fees" => $this->fees,
         ];
     }
 
-    public function setDiscount($amount)
+
+    public function setAmount($amount)
     {
-        $this->discount=$amount;
+        $this->amount=$amount;
     }
+
+    public function setDiscount($discount)
+    {
+        $this->discount=$this->amount * ($discount/100);
+    }
+
+
 }

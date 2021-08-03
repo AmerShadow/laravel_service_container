@@ -17,4 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("payment",[PayOrderController::class,"store"])->name('payment.gateway');
+Route::post("payment",[PayOrderController::class,"store"])->name('payment.gateway');
+
+Route::get("payment",[PayOrderController::class,"paymentPage"])->name('payment.gateway');
